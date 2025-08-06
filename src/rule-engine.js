@@ -26,14 +26,14 @@ class CustomRuleEngine {
   async loadRulesFromConfig(configPath = '.kiro/rules') {
     try {
       const rulesDir = path.resolve(configPath);
-      
+
       if (!fs.existsSync(rulesDir)) {
         console.log('📁 Creating default rules directory...');
         fs.mkdirSync(rulesDir, { recursive: true });
         await this.createDefaultRuleFiles(rulesDir);
       }
 
-      const ruleFiles = fs.readdirSync(rulesDir).filter(file => 
+      const ruleFiles = fs.readdirSync(rulesDir).filter(file =>
         file.endsWith('.js') || file.endsWith('.json')
       );
 
@@ -41,7 +41,7 @@ class CustomRuleEngine {
         const filePath = path.join(rulesDir, file);
         try {
           let ruleConfig;
-          
+
           if (file.endsWith('.js')) {
             // Clear require cache to allow hot reloading
             delete require.cache[require.resolve(filePath)];
@@ -66,7 +66,7 @@ class CustomRuleEngine {
   // Load a rule set into the engine
   loadRuleSet(ruleConfig, source = 'default') {
     const { team, rules, global_settings } = ruleConfig;
-    
+
     if (global_settings) {
       this.applyGlobalSettings(global_settings);
     }
@@ -127,10 +127,10 @@ class CustomRuleEngine {
 
     for (const change of codeChanges) {
       if (change.status === 'removed') continue;
-      
+
       results.files_analyzed++;
       const fileIssues = await this.analyzeFile(change);
-      
+
       fileIssues.forEach(issue => {
         results.total_issues++;
         results.issues_by_severity[issue.severity]++;
@@ -173,7 +173,7 @@ class CustomRuleEngine {
     // Check file type restrictions
     if (rule.file_types.length > 0 && !rule.file_types.includes('*')) {
       const fileExt = path.extname(filename);
-      const matchesType = rule.file_types.some(type => 
+      const matchesType = rule.file_types.some(type =>
         filename.endsWith(type) || fileExt === type
       );
       if (!matchesType) return false;
@@ -181,7 +181,7 @@ class CustomRuleEngine {
 
     // Check exceptions
     if (rule.exceptions.length > 0) {
-      const matchesException = rule.exceptions.some(exception => 
+      const matchesException = rule.exceptions.some(exception =>
         filename.includes(exception)
       );
       if (matchesException) return false;
@@ -198,7 +198,7 @@ class CustomRuleEngine {
     for (const pattern of rule.patterns) {
       const regex = new RegExp(pattern.pattern || pattern, pattern.flags || 'gi');
       let match;
-      
+
       while ((match = regex.exec(code)) !== null) {
         // Check if this match should be ignored
         if (this.shouldIgnoreMatch(match, rule, code)) continue;
@@ -254,9 +254,9 @@ class CustomRuleEngine {
     const lineStart = code.lastIndexOf('\n', match.index) + 1;
     const lineEnd = code.indexOf('\n', match.index);
     const line = code.substring(lineStart, lineEnd === -1 ? code.length : lineEnd);
-    
-    if (line.includes(`// kiro-ignore: ${rule.name}`) || 
-        line.includes(`/* kiro-ignore: ${rule.name} */`)) {
+
+    if (line.includes(`// kiro-ignore: ${rule.name}`) ||
+      line.includes(`/* kiro-ignore: ${rule.name} */`)) {
       return true;
     }
 
@@ -449,13 +449,13 @@ class CustomRuleEngine {
     for (const rule of this.rules.values()) {
       // Count by category
       stats.by_category[rule.category] = (stats.by_category[rule.category] || 0) + 1;
-      
+
       // Count by severity
       stats.by_severity[rule.severity] = (stats.by_severity[rule.severity] || 0) + 1;
-      
+
       // Count by team
       stats.by_team[rule.team] = (stats.by_team[rule.team] || 0) + 1;
-      
+
       // Count enabled rules
       if (rule.enabled) stats.enabled_rules++;
     }
