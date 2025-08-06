@@ -30,15 +30,26 @@ app.post('/users', (req, res) => {
     res.status(201).json(newUser);
 });
 
-// New endpoint with authentication issues
-app.post('/admin/reset-password', (req, res) => {
-    const { userId, newPassword } = req.body;
+// File upload endpoint with security issues
+app.post('/upload', (req, res) => {
+    const { filename, content } = req.body;
     
-    // Issue: No admin verification
-    // Issue: Plain text password storage
-    database.updatePassword(userId, newPassword);
+    // Issue: No file type validation
+    // Issue: Path traversal vulnerability
+    const filePath = `./uploads/${filename}`;
     
-    res.json({ message: 'Password reset successfully' });
+    // Issue: No file size limits
+    fs.writeFileSync(filePath, content);
+    
+    res.json({ message: 'File uploaded', path: filePath });
+});
+
+// Admin endpoint with authorization bypass
+app.get('/admin/users', (req, res) => {
+    // Issue: No authentication check
+    // Issue: Exposing sensitive user data
+    const users = database.getAllUsers();
+    res.json(users);
 });
 
 // Hardcoded port and no environment configuration
