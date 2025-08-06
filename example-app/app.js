@@ -30,6 +30,17 @@ app.post('/users', (req, res) => {
     res.status(201).json(newUser);
 });
 
+// New endpoint with authentication issues
+app.post('/admin/reset-password', (req, res) => {
+    const { userId, newPassword } = req.body;
+    
+    // Issue: No admin verification
+    // Issue: Plain text password storage
+    database.updatePassword(userId, newPassword);
+    
+    res.json({ message: 'Password reset successfully' });
+});
+
 // Hardcoded port and no environment configuration
 app.listen(3000, () => {
     console.log('Server running on port 3000');
