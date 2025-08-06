@@ -1,0 +1,21 @@
+# Example: How to use this in another repository
+# File: .github/workflows/pr-review.yml
+
+name: PR Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  review:
+    uses: your-org/gemini-pr-reviewer/.github/workflows/reusable-pr-review.yml@main
+    secrets:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+    with:
+      node-version: '20'
+      merge-method: 'merge'
+
+# Alternative: Direct copy approach
+# Just copy the package.json, src/, and .github/workflows/pr-review.yml
+# to any repository and it will work immediately
