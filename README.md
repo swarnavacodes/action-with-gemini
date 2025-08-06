@@ -29,8 +29,9 @@ gemini-pr-reviewer/
 │       └── data-processor.js     # Code quality issues
 └── docs/integration-guides/       # 🔗 Integration guides
     ├── README.md                # Integration overview
-    ├── non-nodejs-repo.md       # Using with other languages
+    ├── nodejs-integration.md    # Node.js/Express/NestJS setup
     ├── python-integration.md    # Python-specific setup
+    ├── non-nodejs-repo.md       # Using with other languages
     ├── enterprise-setup.md      # Large organization deployment
     └── other-repo-usage.yml     # Reusable workflow examples
 ```

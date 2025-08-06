@@ -40,8 +40,9 @@ Sample applications for testing the AI reviewer:
 ### 🔗 Integration Guides (`/docs/integration-guides`)
 Comprehensive guides for integrating with different project types:
 - `README.md` - Integration overview and quick start
-- `non-nodejs-repo.md` - Using with Python, Java, Go, etc.
+- `nodejs-integration.md` - Node.js/Express/NestJS/Next.js setup and best practices
 - `python-integration.md` - Python-specific setup and best practices
+- `non-nodejs-repo.md` - Using with Java, Go, C++, etc.
 - `enterprise-setup.md` - Large organization deployment guide
 - `other-repo-usage.yml` - Reusable workflow configurations
 
