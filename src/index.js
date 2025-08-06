@@ -87,37 +87,35 @@ class GeminiPRReviewer {
   }
 
   async performGeminiReview(codeChanges, pr) {
-    const prompt = `
-Please review this Pull Request:
+    // Limit the amount of code to review to stay within quota
+    const limitedChanges = codeChanges.slice(0, 5); // Only review first 5 files
+    const maxPatchLength = 500; // Limit diff size per file
+    
+    const truncatedChanges = limitedChanges.map(change => ({
+      ...change,
+      patch: change.patch ? change.patch.substring(0, maxPatchLength) + 
+             (change.patch.length > maxPatchLength ? '\n[... truncated for quota limits]' : '') : 'No changes'
+    }));
+
+    const prompt = `Review this PR:
 
 Title: ${pr.title}
-Description: ${pr.body || 'No description provided'}
+Files: ${truncatedChanges.map(c => c.filename).join(', ')}
 
-Code Changes:
-${codeChanges.map(change => `
-File: ${change.filename} (${change.status})
-Changes: +${change.additions} -${change.deletions}
-Diff:
+Changes:
+${truncatedChanges.map(change => `
+${change.filename}: +${change.additions} -${change.deletions}
 ${change.patch}
-`).join('\n')}
+`).join('\n').substring(0, 2000)}
 
-Please provide a code review focusing on:
-1. Code quality and best practices
-2. Security vulnerabilities
-3. Performance issues
-4. Logic errors
-5. Code style and maintainability
-
-Respond in JSON format:
+Find security, performance, and quality issues. Respond in JSON:
 {
   "approved": true/false,
-  "summary": "Brief summary of the review",
-  "issues": ["list of issues found"],
-  "suggestions": ["list of improvement suggestions"],
+  "summary": "Brief review summary",
+  "issues": ["issue1", "issue2"],
+  "suggestions": ["suggestion1"],
   "score": 1-10
 }
-
-Only approve (set approved: true) if the code is of high quality with no critical issues.
 `;
 
     // Try multiple models and retry logic
