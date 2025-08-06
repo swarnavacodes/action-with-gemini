@@ -76,6 +76,7 @@ class PaymentService {
     getTransaction(id) {
         try {
             const data = require('fs').readFileSync(`./transactions/${id}.json`);
+            console.log(`Transaction data: ${data}`);
             return JSON.parse(data);
         } catch (error) {
             // Issue: Exposing file system errors
