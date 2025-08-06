@@ -5,8 +5,9 @@ This directory contains guides for integrating the Gemini AI Code Reviewer into 
 ## 📁 Available Guides
 
 ### Language-Specific Integration
-- **[Non-Node.js Projects](./non-nodejs-repo.md)** - Python, Java, Go, C++, etc.
+- **[Node.js Projects](./nodejs-integration.md)** - Express.js, NestJS, Next.js, Fastify
 - **[Python Projects](./python-integration.md)** - Django, Flask, FastAPI
+- **[Non-Node.js Projects](./non-nodejs-repo.md)** - Java, Go, C++, etc.
 - **[Java Projects](./java-integration.md)** - Spring Boot, Maven, Gradle
 - **[Frontend Projects](./frontend-integration.md)** - React, Vue, Angular
 
@@ -49,16 +50,17 @@ The AI reviewer works with **any programming language** because it analyzes git 
 
 | Language | Support Level | Special Features |
 |----------|---------------|------------------|
-| JavaScript/TypeScript | ⭐⭐⭐⭐⭐ | Full syntax understanding |
-| Python | ⭐⭐⭐⭐⭐ | Security & performance analysis |
-| Java | ⭐⭐⭐⭐⭐ | Enterprise patterns |
-| Go | ⭐⭐⭐⭐ | Concurrency analysis |
-| C/C++ | ⭐⭐⭐⭐ | Memory management |
-| C# | ⭐⭐⭐⭐ | .NET best practices |
-| PHP | ⭐⭐⭐ | Web security focus |
-| Ruby | ⭐⭐⭐ | Rails patterns |
-| Rust | ⭐⭐⭐ | Safety analysis |
-| Any other | ⭐⭐⭐ | General code quality |
+| **Node.js/JavaScript** | ⭐⭐⭐⭐⭐ | Express, NestJS, Next.js, async/await patterns |
+| **TypeScript** | ⭐⭐⭐⭐⭐ | Type safety, decorators, advanced patterns |
+| **Python** | ⭐⭐⭐⭐⭐ | Django, Flask, FastAPI, security analysis |
+| **Java** | ⭐⭐⭐⭐⭐ | Spring Boot, enterprise patterns |
+| **Go** | ⭐⭐⭐⭐ | Concurrency, performance analysis |
+| **C/C++** | ⭐⭐⭐⭐ | Memory management, performance |
+| **C#** | ⭐⭐⭐⭐ | .NET best practices, async patterns |
+| **PHP** | ⭐⭐⭐ | Laravel, web security focus |
+| **Ruby** | ⭐⭐⭐ | Rails patterns, conventions |
+| **Rust** | ⭐⭐⭐ | Memory safety, performance |
+| **Any other** | ⭐⭐⭐ | General code quality analysis |
 
 ## 🔧 Configuration Options
 
