@@ -27,8 +27,11 @@ gemini-pr-reviewer/
 │       ├── database-utils.js     # Database security problems
 │       ├── user-controller.js    # User management vulnerabilities
 │       └── data-processor.js     # Code quality issues
-└── examples/                      # 🔄 Reusability examples
+└── docs/integration-guides/       # 🔗 Integration guides
+    ├── README.md                # Integration overview
     ├── non-nodejs-repo.md       # Using with other languages
+    ├── python-integration.md    # Python-specific setup
+    ├── enterprise-setup.md      # Large organization deployment
     └── other-repo-usage.yml     # Reusable workflow examples
 ```
 

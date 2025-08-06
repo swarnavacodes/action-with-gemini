@@ -37,9 +37,12 @@ Sample applications for testing the AI reviewer:
   - `user-controller.js` - Authorization flaws and information disclosure
   - `data-processor.js` - Performance issues and code quality problems
 
-### 🔄 Reusability Examples (`/examples`)
-Templates and guides for using the reviewer in other projects:
+### 🔗 Integration Guides (`/docs/integration-guides`)
+Comprehensive guides for integrating with different project types:
+- `README.md` - Integration overview and quick start
 - `non-nodejs-repo.md` - Using with Python, Java, Go, etc.
+- `python-integration.md` - Python-specific setup and best practices
+- `enterprise-setup.md` - Large organization deployment guide
 - `other-repo-usage.yml` - Reusable workflow configurations
 
 ## 🎯 Usage Workflow
