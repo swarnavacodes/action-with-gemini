@@ -120,37 +120,86 @@ Respond in JSON format:
 Only approve (set approved: true) if the code is of high quality with no critical issues.
 `;
 
-    try {
-      const result = await this.model.generateContent(prompt);
-      const response = await result.response;
-      const text = response.text();
+    // Try multiple models and retry logic
+    const modelsToTry = ['gemini-1.5-flash', 'gemini-1.5-pro'];
+    let lastError = null;
+
+    for (const modelName of modelsToTry) {
+      console.log(`Trying model: ${modelName}`);
       
-      // Parse JSON response
-      const jsonMatch = text.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        return JSON.parse(jsonMatch[0]);
+      try {
+        // Create model instance for this attempt
+        const model = this.genAI.getGenerativeModel({ model: modelName });
+        
+        // Add retry logic with exponential backoff
+        for (let attempt = 1; attempt <= 3; attempt++) {
+          try {
+            console.log(`Attempt ${attempt} with ${modelName}`);
+            
+            const result = await model.generateContent(prompt);
+            const response = await result.response;
+            const text = response.text();
+            
+            console.log(`✅ Success with ${modelName} on attempt ${attempt}`);
+            
+            // Parse JSON response
+            const jsonMatch = text.match(/\{[\s\S]*\}/);
+            if (jsonMatch) {
+              return JSON.parse(jsonMatch[0]);
+            }
+            
+            // Fallback if JSON parsing fails but API call succeeded
+            return {
+              approved: false,
+              summary: "Review completed but response format was invalid",
+              issues: ["Could not parse Gemini response"],
+              suggestions: ["Response: " + text.substring(0, 200) + "..."],
+              score: 5
+            };
+            
+          } catch (attemptError) {
+            lastError = attemptError;
+            console.log(`❌ Attempt ${attempt} failed: ${attemptError.message}`);
+            
+            if (attemptError.message.includes('503') || attemptError.message.includes('overloaded')) {
+              // Wait before retry for overloaded service
+              const delay = Math.pow(2, attempt) * 1000; // Exponential backoff
+              console.log(`⏳ Waiting ${delay}ms before retry...`);
+              await new Promise(resolve => setTimeout(resolve, delay));
+            } else if (attemptError.message.includes('429')) {
+              // Rate limited - wait longer
+              console.log('⏳ Rate limited, waiting 10 seconds...');
+              await new Promise(resolve => setTimeout(resolve, 10000));
+            } else {
+              // Other errors - don't retry this model
+              break;
+            }
+          }
+        }
+      } catch (modelError) {
+        lastError = modelError;
+        console.log(`❌ Model ${modelName} failed: ${modelError.message}`);
       }
-      
-      // Fallback if JSON parsing fails
-      return {
-        approved: false,
-        summary: "Review completed but response format was invalid",
-        issues: ["Could not parse Gemini response"],
-        suggestions: [],
-        score: 5
-      };
-      
-    } catch (error) {
-      // Log error without exposing sensitive information
-      console.error('Gemini review error:', error.message);
-      return {
-        approved: false,
-        summary: "Review failed due to technical error",
-        issues: ["Technical error occurred during review"],
-        suggestions: ["Please check the workflow logs for details"],
-        score: 0
-      };
     }
+
+    // All models and retries failed
+    console.error('All Gemini models failed:', lastError?.message);
+    
+    return {
+      approved: false,
+      summary: "Review failed due to Gemini API issues",
+      issues: [
+        "Gemini API is currently unavailable",
+        lastError?.message?.includes('503') ? "Service overloaded - try again later" : "API error occurred",
+        "This may be temporary - please retry the workflow"
+      ],
+      suggestions: [
+        "Wait a few minutes and re-run the workflow",
+        "Check Gemini API status at https://status.google.com/",
+        "Verify your API key is valid and has quota remaining"
+      ],
+      score: 0
+    };
   }
 
   async postReviewComment(owner, repo, prNumber, reviewResult) {
