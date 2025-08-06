@@ -1,0 +1,30 @@
+{
+  "name": "vulnerable-webapp-example",
+  "version": "1.0.0",
+  "description": "Example web application with intentional security vulnerabilities for testing the Gemini AI code reviewer",
+  "main": "express-api/app.js",
+  "scripts": {
+    "start": "node express-api/app.js",
+    "dev": "nodemon express-api/app.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "bcrypt": "^5.1.0",
+    "mysql2": "^3.6.0",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "keywords": [
+    "security",
+    "vulnerabilities",
+    "testing",
+    "code-review",
+    "example"
+  ],
+  "author": "Gemini AI Code Reviewer",
+  "license": "MIT",
+  "private": true,
+  "warning": "⚠️  This code contains intentional security vulnerabilities for testing purposes. DO NOT use in production!"
+}
