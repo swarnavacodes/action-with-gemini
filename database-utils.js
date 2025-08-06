@@ -28,7 +28,7 @@ class DatabaseUtils {
     async getAllUsers() {
         // Issue: No pagination for large datasets
         const query = 'SELECT * FROM users';
-        
+
         return new Promise((resolve, reject) => {
             this.connection.query(query, (error, results) => {
                 if (error) {
@@ -43,11 +43,11 @@ class DatabaseUtils {
     // Issue: Inefficient batch operations
     async insertMultipleUsers(users) {
         const results = [];
-        
+
         // Issue: N+1 query problem
         for (let user of users) {
             const query = `INSERT INTO users (name, email) VALUES ('${user.name}', '${user.email}')`;
-            
+
             try {
                 const result = await new Promise((resolve, reject) => {
                     this.connection.query(query, (error, result) => {
@@ -61,7 +61,7 @@ class DatabaseUtils {
                 console.error('Failed to insert user:', error);
             }
         }
-        
+
         return results;
     }
 
@@ -78,14 +78,14 @@ class DatabaseUtils {
         // Issue: No atomic operations
         await this.updateUserBalance(fromUserId, 0);
         await this.updateUserBalance(toUserId, fromUser.balance + toUser.balance);
-        
+
         return true;
     }
 
     // Issue: Missing input validation
     async updateUserBalance(userId, newBalance) {
         const query = `UPDATE users SET balance = ${newBalance} WHERE id = ${userId}`;
-        
+
         return new Promise((resolve, reject) => {
             this.connection.query(query, (error, result) => {
                 if (error) reject(error);
