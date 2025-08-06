@@ -63,9 +63,11 @@ Create a PR with changes to files in `example-projects/vulnerable-webapp/` to se
 - 🔒 **Security Analysis** - Detects vulnerabilities, injection attacks, hardcoded secrets
 - ⚡ **Performance Review** - Identifies inefficient algorithms, memory leaks
 - 📝 **Code Quality** - Checks best practices, documentation, maintainability
-- 🤖 **Auto-merge** - Automatically merges approved PRs
+- 🎯 **Custom Rule Engine** - Team-specific rules and coding standards
+- 📊 **Advanced Reports** - HTML, JSON, Markdown reports with detailed analytics
+- 🤖 **Auto-merge** - Automatically merges approved PRs (with rule validation)
 - 🔄 **Reusable** - Works with any programming language
-- 📊 **Detailed Reports** - Comprehensive feedback with scores and suggestions
+- 📈 **Analytics Dashboard** - Track trends, ROI, and team performance
 
 ## 🎯 AI Review Capabilities
 
@@ -124,12 +126,18 @@ npm run test-simple
 # Comprehensive API testing
 npm run test-gemini
 
+# Test custom rule engine
+npm run test-rules
+
+# Test rule engine with sample code
+node tests/test-rule-engine.js
+
 # Create test PR with vulnerable code
 git checkout -b test-security-review
 # Edit files in example-projects/vulnerable-webapp/
 git commit -m "Test security vulnerabilities"
 git push origin test-security-review
-# Create PR and watch the AI review!
+# Create PR and watch the enhanced AI review!
 ```
 
 ## 🔧 Configuration
@@ -139,6 +147,36 @@ git push origin test-security-review
 GEMINI_API_KEY=your_gemini_api_key_here
 MERGE_METHOD=squash  # squash, merge, or rebase
 ```
+
+### Custom Rule Engine
+Create team-specific rules in `.kiro/rules/`:
+
+```javascript
+// .kiro/rules/my-team.js
+module.exports = {
+  team: 'my-team',
+  rules: {
+    'no-hardcoded-secrets': {
+      category: 'security',
+      severity: 'critical',
+      description: 'Prevents hardcoded API keys and passwords',
+      patterns: [
+        {
+          pattern: '(api[_-]?key|password|secret)\\s*[=:]\\s*["\'][^"\'\\s]{8,}["\']',
+          message: 'Hardcoded secret detected',
+          fix_suggestion: 'Use environment variables instead'
+        }
+      ]
+    }
+  }
+};
+```
+
+### Advanced Reports
+Reports are automatically generated in multiple formats:
+- **JSON**: `reports/pr-{number}-report.json` (programmatic access)
+- **HTML**: `reports/pr-{number}-report.html` (human-readable)
+- **Markdown**: `reports/pr-{number}-report.md` (GitHub integration)
 
 ### Workflow Customization
 Edit `.github/workflows/pr-review.yml` to:
