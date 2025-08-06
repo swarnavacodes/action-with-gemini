@@ -30,26 +30,41 @@ app.post('/users', (req, res) => {
     res.status(201).json(newUser);
 });
 
-// File upload endpoint with security issues
-app.post('/upload', (req, res) => {
-    const { filename, content } = req.body;
+// Search endpoint with injection vulnerability
+app.get('/search', (req, res) => {
+    const { query, category } = req.query;
     
-    // Issue: No file type validation
-    // Issue: Path traversal vulnerability
-    const filePath = `./uploads/${filename}`;
+    // Issue: NoSQL injection vulnerability
+    const searchQuery = {
+        $where: `this.title.includes('${query}') && this.category === '${category}'`
+    };
     
-    // Issue: No file size limits
-    fs.writeFileSync(filePath, content);
-    
-    res.json({ message: 'File uploaded', path: filePath });
+    // Issue: No input validation or sanitization
+    database.find(searchQuery, (err, results) => {
+        if (err) {
+            // Issue: Exposing database errors
+            res.status(500).json({ error: err.message });
+        } else {
+            res.json(results);
+        }
+    });
 });
 
-// Admin endpoint with authorization bypass
-app.get('/admin/users', (req, res) => {
-    // Issue: No authentication check
-    // Issue: Exposing sensitive user data
-    const users = database.getAllUsers();
-    res.json(users);
+// Password reset with security flaws
+app.post('/reset-password', (req, res) => {
+    const { email, newPassword } = req.body;
+    
+    // Issue: No email verification
+    // Issue: No rate limiting
+    // Issue: Weak password requirements
+    if (newPassword.length < 3) {
+        return res.status(400).json({ error: 'Password too short' });
+    }
+    
+    // Issue: Direct password update without verification
+    database.updatePassword(email, newPassword);
+    
+    res.json({ message: 'Password updated successfully' });
 });
 
 // Hardcoded port and no environment configuration
