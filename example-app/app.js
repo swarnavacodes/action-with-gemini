@@ -19,6 +19,18 @@ app.get('/users/:id', (req, res) => {
     res.json(users.find(u => u.id == userId));
 });
 
+// New endpoint with more issues
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+    
+    // Security: Plain text password comparison
+    if (username === 'admin' && password === 'password123') {
+        res.json({ token: 'fake-jwt-token', admin: true });
+    } else {
+        res.status(401).json({ error: 'Invalid credentials' });
+    }
+});
+
 // Missing CORS and security headers
 app.post('/users', (req, res) => {
     // Missing body parsing middleware
