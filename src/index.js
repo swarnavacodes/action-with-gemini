@@ -12,7 +12,7 @@ class GeminiPRReviewer {
     this.octokit = new Octokit({
       auth: process.env.GITHUB_TOKEN,
     });
-    this.model = this.genAI.getGenerativeModel({ model: 'gemini-pro' });
+    this.model = this.genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
   }
 
   async reviewPR() {
