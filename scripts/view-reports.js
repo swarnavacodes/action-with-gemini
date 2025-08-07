@@ -11,7 +11,7 @@ function viewReports() {
     if (!fs.existsSync(reportsDir)) {
         console.log('📁 No reports directory found. Reports will be created when you run a PR review.\n');
         console.log('🧪 To generate test reports, run:');
-        console.log('   node tests/test-rule-engine.js\n');
+        console.log('   npm run generate-report\n');
         return;
     }
 

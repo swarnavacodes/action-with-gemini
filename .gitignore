@@ -4,3 +4,14 @@ node_modules/
 .DS_Store
 dist/
 coverage/
+
+# AI Reviewer Generated Files
+reports/
+test-report.*
+*-report.json
+*-report.html
+*-report.md
+
+# Demo/Test Files
+view-reports.html
+demo-*.html
