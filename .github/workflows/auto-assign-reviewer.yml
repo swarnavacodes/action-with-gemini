@@ -1,0 +1,63 @@
+name: Auto Assign Reviewer
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  assign-reviewer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Auto assign reviewer
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const prNumber = context.payload.pull_request.number;
+            
+            // Assign yourself as reviewer
+            await github.rest.pulls.requestReviewers({
+              owner,
+              repo,
+              pull_number: prNumber,
+              reviewers: ['swarnavacodes']
+            });
+            
+            // Add labels to the PR
+            await github.rest.issues.addLabels({
+              owner,
+              repo,
+              issue_number: prNumber,
+              labels: ['🤖 ai-review', '👀 needs-review']
+            });
+            
+            // Add a comment explaining the AI reviewer
+            await github.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number: prNumber,
+              body: `## 🤖 AI Code Reviewer Activated
+              
+**Human Reviewer**: @swarnavacodes has been automatically assigned
+
+**AI Reviewer**: The Gemini AI Code Reviewer is now analyzing this PR and will post a detailed review comment within 2-3 minutes.
+
+### 📊 What the AI will analyze:
+- 🛡️ **Security vulnerabilities** (SQL injection, hardcoded secrets, etc.)
+- ⚡ **Performance issues** (inefficient algorithms, memory leaks)
+- 📝 **Code quality** (best practices, error handling, documentation)
+- 🎯 **Custom team rules** (41+ rules configured)
+
+### 📄 Reports will be generated:
+- 💬 **Enhanced PR comment** with detailed analysis
+- 📊 **JSON report** for programmatic access
+- 🌐 **HTML report** for visual review
+- 📁 **Downloadable artifacts** in Actions tab
+
+**⏱️ Expected completion**: 2-3 minutes
+
+---
+*This comment was automatically generated. The AI review will appear as a separate comment below.*`
+            });
+            
+            console.log('✅ Reviewer assigned and AI explanation posted');
