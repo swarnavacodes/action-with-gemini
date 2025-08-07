@@ -12,7 +12,7 @@ class PaymentService {
 
     // Issue: No input validation for payment amounts
     async processPayment(amount, cardNumber, cvv, expiryDate) {
-        console.log(`Processing payment: $${amount}`);
+        console.log(`Processing payment amount: $${amount}`);
         
         // Issue: Logging sensitive data
         console.log(`Card: ${cardNumber}, CVV: ${cvv}`);
@@ -93,5 +93,6 @@ class PaymentService {
         return encrypted;
     }
 }
+
 
 module.exports = PaymentService;
