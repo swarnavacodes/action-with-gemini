@@ -39,3 +39,30 @@ jobs:
           NODE_ENV: production
         run: npm start
         timeout-minutes: 10
+
+      - name: Display Pipeline Report Summary
+        if: always()
+        run: node scripts/pipeline-reporter.js summary
+
+      - name: Generate GitHub Actions Step Summary
+        if: always()
+        run: node scripts/pipeline-reporter.js step-summary
+
+      - name: Upload Reports as Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-review-reports-pr-${{ github.event.number }}
+          path: |
+            reports/
+            test-report.*
+          retention-days: 30
+
+      - name: Display Report Links
+        if: always()
+        run: |
+          echo "📄 === REPORT LOCATIONS ==="
+          echo "1. 💬 PR Comment: Check the PR for detailed review comment"
+          echo "2. 📁 Artifacts: Download from Actions > Artifacts section"
+          echo "3. 🔍 Logs: Scroll up to see detailed analysis logs"
+          echo "4. 📊 Summary: See above for key metrics"

@@ -1,0 +1,566 @@
+{
+  "metadata": {
+    "generated_at": "2025-08-07T00:20:08.840Z",
+    "pr_number": 123,
+    "repository": "test/repo",
+    "author": "testuser",
+    "title": "Test PR for Rule Engine",
+    "branch": "unknown",
+    "base_branch": "main"
+  },
+  "summary": {
+    "overall_score": 6,
+    "status": "NEEDS_CHANGES",
+    "total_issues": 8,
+    "files_analyzed": 1,
+    "rules_applied": 41,
+    "review_duration": "2.5s"
+  },
+  "ai_analysis": {
+    "gemini_summary": "Code has several security and performance issues",
+    "gemini_issues": [
+      "Hardcoded secrets detected",
+      "SQL injection vulnerability"
+    ],
+    "gemini_suggestions": [
+      "Use environment variables",
+      "Use parameterized queries"
+    ],
+    "confidence_score": 0.85
+  },
+  "rule_engine_analysis": {
+    "issues_by_severity": {
+      "critical": 2,
+      "high": 3,
+      "medium": 3,
+      "low": 0,
+      "info": 0
+    },
+    "issues_by_category": {
+      "security": 2,
+      "performance": 5,
+      "quality": 1,
+      "style": 0,
+      "compliance": 0
+    },
+    "rule_violations": [
+      {
+        "rule_name": "missing-error-handling",
+        "category": "quality",
+        "severity": "high",
+        "description": "Detects async functions without proper error handling",
+        "message": "Async function missing try-catch block",
+        "line_number": 6,
+        "column": 1,
+        "matched_text": "async function getUserData(id) {\n    // Missing try-catch\n    const user = await database.findById(id);\n    console.log(\"Debug: user found\", user);\n    return user;\n}",
+        "fix_suggestion": "Wrap async operations in try-catch blocks",
+        "auto_fix": false,
+        "metadata": {
+          "created_by": "system",
+          "created_at": "2025-08-07T00:20:08.785Z",
+          "tags": []
+        },
+        "file": "test.js",
+        "pr_number": 123,
+        "timestamp": "2025-08-07T00:20:08.816Z"
+      },
+      {
+        "rule_name": "no-inefficient-loops",
+        "category": "performance",
+        "severity": "medium",
+        "description": "Detects inefficient loop patterns",
+        "message": "Loop with .length in condition - cache length for better performance",
+        "line_number": 21,
+        "column": 5,
+        "matched_text": "for (let i = 0; i < users.length; i++)",
+        "fix_suggestion": "Cache array length: for(let i = 0, len = arr.length; i < len; i++)",
+        "auto_fix": false,
+        "metadata": {
+          "created_by": "performance",
+          "created_at": "2025-08-07T00:20:08.788Z",
+          "tags": []
+        },
+        "file": "test.js",
+        "pr_number": 123,
+        "timestamp": "2025-08-07T00:20:08.816Z"
+      },
+      {
+        "rule_name": "no-inefficient-loops",
+        "category": "performance",
+        "severity": "medium",
+        "description": "Detects inefficient loop patterns",
+        "message": "Loop with .length in condition - cache length for better performance",
+        "line_number": 22,
+        "column": 9,
+        "matched_text": "for (let j = 0; j < users.length; j++)",
+        "fix_suggestion": "Cache array length: for(let i = 0, len = arr.length; i < len; i++)",
+        "auto_fix": false,
+        "metadata": {
+          "created_by": "performance",
+          "created_at": "2025-08-07T00:20:08.788Z",
+          "tags": []
+        },
+        "file": "test.js",
+        "pr_number": 123,
+        "timestamp": "2025-08-07T00:20:08.817Z"
+      },
+      {
+        "rule_name": "no-nested-loops-over-large-arrays",
+        "category": "performance",
+        "severity": "high",
+        "description": "Detects potentially expensive nested loops",
+        "message": "Nested loops detected - potential O(n²) complexity",
+        "line_number": 21,
+        "column": 5,
+        "matched_text": "for (let i = 0; i < users.length; i++) {\n        for (let j = 0; j < users.length; j++)",
+        "fix_suggestion": "Consider using Map, Set, or more efficient algorithms",
+        "auto_fix": false,
+        "metadata": {
+          "created_by": "performance",
+          "created_at": "2025-08-07T00:20:08.788Z",
+          "tags": []
+        },
+        "file": "test.js",
+        "pr_number": 123,
+        "timestamp": "2025-08-07T00:20:08.817Z"
+      },
+      {
+        "rule_name": "no-synchronous-file-operations",
+        "category": "performance",
+        "severity": "high",
+        "description": "Prevents synchronous file operations that block event loop",
+        "message": "Synchronous file operation blocks event loop",
+        "line_number": 33,
+        "column": 16,
+        "matched_text": "fs.readFileSync",
+        "fix_suggestion": "Use async versions with await or promises",
+        "auto_fix": false,
+        "metadata": {
+          "created_by": "performance",
+          "created_at": "2025-08-07T00:20:08.788Z",
+          "tags": []
+        },
+        "file": "test.js",
+        "pr_number": 123,
+        "timestamp": "2025-08-07T00:20:08.817Z"
+      },
+      {
+        "rule_name": "require-pagination-for-large-datasets",
+        "category": "performance",
+        "severity": "medium",
+        "description": "Ensures large dataset queries use pagination",
+        "message": "SQL query without LIMIT clause",
+        "line_number": 15,
+        "column": 18,
+        "matched_text": "SELECT * FROM users WHERE name = '${query}'`",
+        "fix_suggestion": "Add LIMIT clause to prevent large result sets",
+        "auto_fix": false,
+        "metadata": {
+          "created_by": "performance",
+          "created_at": "2025-08-07T00:20:08.788Z",
+          "tags": []
+        },
+        "file": "test.js",
+        "pr_number": 123,
+        "timestamp": "2025-08-07T00:20:08.817Z"
+      },
+      {
+        "rule_name": "no-hardcoded-secrets-comprehensive",
+        "category": "security",
+        "severity": "critical",
+        "description": "Comprehensive detection of hardcoded secrets",
+        "message": "Hardcoded secret detected",
+        "line_number": 3,
+        "column": 7,
+        "matched_text": "apiKey = \"hardcoded-secret-123\"",
+        "fix_suggestion": "Use environment variables or secure key management",
+        "auto_fix": false,
+        "metadata": {
+          "created_by": "security",
+          "created_at": "2025-08-07T00:20:08.795Z",
+          "tags": []
+        },
+        "file": "test.js",
+        "pr_number": 123,
+        "timestamp": "2025-08-07T00:20:08.817Z"
+      },
+      {
+        "rule_name": "no-hardcoded-secrets-comprehensive",
+        "category": "security",
+        "severity": "critical",
+        "description": "Comprehensive detection of hardcoded secrets",
+        "message": "Hardcoded secret detected",
+        "line_number": 4,
+        "column": 7,
+        "matched_text": "password = \"admin123\"",
+        "fix_suggestion": "Use environment variables or secure key management",
+        "auto_fix": false,
+        "metadata": {
+          "created_by": "security",
+          "created_at": "2025-08-07T00:20:08.795Z",
+          "tags": []
+        },
+        "file": "test.js",
+        "pr_number": 123,
+        "timestamp": "2025-08-07T00:20:08.817Z"
+      }
+    ],
+    "top_issues": [
+      {
+        "rule": "no-inefficient-loops",
+        "count": 2
+      },
+      {
+        "rule": "no-hardcoded-secrets-comprehensive",
+        "count": 2
+      },
+      {
+        "rule": "missing-error-handling",
+        "count": 1
+      },
+      {
+        "rule": "no-nested-loops-over-large-arrays",
+        "count": 1
+      },
+      {
+        "rule": "no-synchronous-file-operations",
+        "count": 1
+      }
+    ]
+  },
+  "security_analysis": {
+    "critical_vulnerabilities": [
+      {
+        "rule_name": "no-hardcoded-secrets-comprehensive",
+        "category": "security",
+        "severity": "critical",
+        "description": "Comprehensive detection of hardcoded secrets",
+        "message": "Hardcoded secret detected",
+        "line_number": 3,
+        "column": 7,
+        "matched_text": "apiKey = \"hardcoded-secret-123\"",
+        "fix_suggestion": "Use environment variables or secure key management",
+        "auto_fix": false,
+        "metadata": {
+          "created_by": "security",
+          "created_at": "2025-08-07T00:20:08.795Z",
+          "tags": []
+        },
+        "file": "test.js",
+        "pr_number": 123,
+        "timestamp": "2025-08-07T00:20:08.817Z"
+      },
+      {
+        "rule_name": "no-hardcoded-secrets-comprehensive",
+        "category": "security",
+        "severity": "critical",
+        "description": "Comprehensive detection of hardcoded secrets",
+        "message": "Hardcoded secret detected",
+        "line_number": 4,
+        "column": 7,
+        "matched_text": "password = \"admin123\"",
+        "fix_suggestion": "Use environment variables or secure key management",
+        "auto_fix": false,
+        "metadata": {
+          "created_by": "security",
+          "created_at": "2025-08-07T00:20:08.795Z",
+          "tags": []
+        },
+        "file": "test.js",
+        "pr_number": 123,
+        "timestamp": "2025-08-07T00:20:08.817Z"
+      }
+    ],
+    "security_score": 3,
+    "compliance_status": "NON_COMPLIANT",
+    "recommendations": [
+      "Address all critical security vulnerabilities immediately"
+    ]
+  },
+  "performance_analysis": {
+    "performance_issues": [
+      {
+        "rule_name": "no-inefficient-loops",
+        "category": "performance",
+        "severity": "medium",
+        "description": "Detects inefficient loop patterns",
+        "message": "Loop with .length in condition - cache length for better performance",
+        "line_number": 21,
+        "column": 5,
+        "matched_text": "for (let i = 0; i < users.length; i++)",
+        "fix_suggestion": "Cache array length: for(let i = 0, len = arr.length; i < len; i++)",
+        "auto_fix": false,
+        "metadata": {
+          "created_by": "performance",
+          "created_at": "2025-08-07T00:20:08.788Z",
+          "tags": []
+        },
+        "file": "test.js",
+        "pr_number": 123,
+        "timestamp": "2025-08-07T00:20:08.816Z"
+      },
+      {
+        "rule_name": "no-inefficient-loops",
+        "category": "performance",
+        "severity": "medium",
+        "description": "Detects inefficient loop patterns",
+        "message": "Loop with .length in condition - cache length for better performance",
+        "line_number": 22,
+        "column": 9,
+        "matched_text": "for (let j = 0; j < users.length; j++)",
+        "fix_suggestion": "Cache array length: for(let i = 0, len = arr.length; i < len; i++)",
+        "auto_fix": false,
+        "metadata": {
+          "created_by": "performance",
+          "created_at": "2025-08-07T00:20:08.788Z",
+          "tags": []
+        },
+        "file": "test.js",
+        "pr_number": 123,
+        "timestamp": "2025-08-07T00:20:08.817Z"
+      },
+      {
+        "rule_name": "no-nested-loops-over-large-arrays",
+        "category": "performance",
+        "severity": "high",
+        "description": "Detects potentially expensive nested loops",
+        "message": "Nested loops detected - potential O(n²) complexity",
+        "line_number": 21,
+        "column": 5,
+        "matched_text": "for (let i = 0; i < users.length; i++) {\n        for (let j = 0; j < users.length; j++)",
+        "fix_suggestion": "Consider using Map, Set, or more efficient algorithms",
+        "auto_fix": false,
+        "metadata": {
+          "created_by": "performance",
+          "created_at": "2025-08-07T00:20:08.788Z",
+          "tags": []
+        },
+        "file": "test.js",
+        "pr_number": 123,
+        "timestamp": "2025-08-07T00:20:08.817Z"
+      },
+      {
+        "rule_name": "no-synchronous-file-operations",
+        "category": "performance",
+        "severity": "high",
+        "description": "Prevents synchronous file operations that block event loop",
+        "message": "Synchronous file operation blocks event loop",
+        "line_number": 33,
+        "column": 16,
+        "matched_text": "fs.readFileSync",
+        "fix_suggestion": "Use async versions with await or promises",
+        "auto_fix": false,
+        "metadata": {
+          "created_by": "performance",
+          "created_at": "2025-08-07T00:20:08.788Z",
+          "tags": []
+        },
+        "file": "test.js",
+        "pr_number": 123,
+        "timestamp": "2025-08-07T00:20:08.817Z"
+      },
+      {
+        "rule_name": "require-pagination-for-large-datasets",
+        "category": "performance",
+        "severity": "medium",
+        "description": "Ensures large dataset queries use pagination",
+        "message": "SQL query without LIMIT clause",
+        "line_number": 15,
+        "column": 18,
+        "matched_text": "SELECT * FROM users WHERE name = '${query}'`",
+        "fix_suggestion": "Add LIMIT clause to prevent large result sets",
+        "auto_fix": false,
+        "metadata": {
+          "created_by": "performance",
+          "created_at": "2025-08-07T00:20:08.788Z",
+          "tags": []
+        },
+        "file": "test.js",
+        "pr_number": 123,
+        "timestamp": "2025-08-07T00:20:08.817Z"
+      }
+    ],
+    "performance_score": 5,
+    "optimization_opportunities": [
+      "Review and optimize performance-critical code paths"
+    ]
+  },
+  "quality_metrics": {
+    "code_quality_score": 5,
+    "maintainability_index": 95,
+    "technical_debt_estimate": "34 hours estimated"
+  },
+  "actionable_items": {
+    "must_fix": [
+      {
+        "rule_name": "missing-error-handling",
+        "category": "quality",
+        "severity": "high",
+        "description": "Detects async functions without proper error handling",
+        "message": "Async function missing try-catch block",
+        "line_number": 6,
+        "column": 1,
+        "matched_text": "async function getUserData(id) {\n    // Missing try-catch\n    const user = await database.findById(id);\n    console.log(\"Debug: user found\", user);\n    return user;\n}",
+        "fix_suggestion": "Wrap async operations in try-catch blocks",
+        "auto_fix": false,
+        "metadata": {
+          "created_by": "system",
+          "created_at": "2025-08-07T00:20:08.785Z",
+          "tags": []
+        },
+        "file": "test.js",
+        "pr_number": 123,
+        "timestamp": "2025-08-07T00:20:08.816Z"
+      },
+      {
+        "rule_name": "no-nested-loops-over-large-arrays",
+        "category": "performance",
+        "severity": "high",
+        "description": "Detects potentially expensive nested loops",
+        "message": "Nested loops detected - potential O(n²) complexity",
+        "line_number": 21,
+        "column": 5,
+        "matched_text": "for (let i = 0; i < users.length; i++) {\n        for (let j = 0; j < users.length; j++)",
+        "fix_suggestion": "Consider using Map, Set, or more efficient algorithms",
+        "auto_fix": false,
+        "metadata": {
+          "created_by": "performance",
+          "created_at": "2025-08-07T00:20:08.788Z",
+          "tags": []
+        },
+        "file": "test.js",
+        "pr_number": 123,
+        "timestamp": "2025-08-07T00:20:08.817Z"
+      },
+      {
+        "rule_name": "no-synchronous-file-operations",
+        "category": "performance",
+        "severity": "high",
+        "description": "Prevents synchronous file operations that block event loop",
+        "message": "Synchronous file operation blocks event loop",
+        "line_number": 33,
+        "column": 16,
+        "matched_text": "fs.readFileSync",
+        "fix_suggestion": "Use async versions with await or promises",
+        "auto_fix": false,
+        "metadata": {
+          "created_by": "performance",
+          "created_at": "2025-08-07T00:20:08.788Z",
+          "tags": []
+        },
+        "file": "test.js",
+        "pr_number": 123,
+        "timestamp": "2025-08-07T00:20:08.817Z"
+      },
+      {
+        "rule_name": "no-hardcoded-secrets-comprehensive",
+        "category": "security",
+        "severity": "critical",
+        "description": "Comprehensive detection of hardcoded secrets",
+        "message": "Hardcoded secret detected",
+        "line_number": 3,
+        "column": 7,
+        "matched_text": "apiKey = \"hardcoded-secret-123\"",
+        "fix_suggestion": "Use environment variables or secure key management",
+        "auto_fix": false,
+        "metadata": {
+          "created_by": "security",
+          "created_at": "2025-08-07T00:20:08.795Z",
+          "tags": []
+        },
+        "file": "test.js",
+        "pr_number": 123,
+        "timestamp": "2025-08-07T00:20:08.817Z"
+      },
+      {
+        "rule_name": "no-hardcoded-secrets-comprehensive",
+        "category": "security",
+        "severity": "critical",
+        "description": "Comprehensive detection of hardcoded secrets",
+        "message": "Hardcoded secret detected",
+        "line_number": 4,
+        "column": 7,
+        "matched_text": "password = \"admin123\"",
+        "fix_suggestion": "Use environment variables or secure key management",
+        "auto_fix": false,
+        "metadata": {
+          "created_by": "security",
+          "created_at": "2025-08-07T00:20:08.795Z",
+          "tags": []
+        },
+        "file": "test.js",
+        "pr_number": 123,
+        "timestamp": "2025-08-07T00:20:08.817Z"
+      }
+    ],
+    "should_fix": [
+      {
+        "rule_name": "no-inefficient-loops",
+        "category": "performance",
+        "severity": "medium",
+        "description": "Detects inefficient loop patterns",
+        "message": "Loop with .length in condition - cache length for better performance",
+        "line_number": 21,
+        "column": 5,
+        "matched_text": "for (let i = 0; i < users.length; i++)",
+        "fix_suggestion": "Cache array length: for(let i = 0, len = arr.length; i < len; i++)",
+        "auto_fix": false,
+        "metadata": {
+          "created_by": "performance",
+          "created_at": "2025-08-07T00:20:08.788Z",
+          "tags": []
+        },
+        "file": "test.js",
+        "pr_number": 123,
+        "timestamp": "2025-08-07T00:20:08.816Z"
+      },
+      {
+        "rule_name": "no-inefficient-loops",
+        "category": "performance",
+        "severity": "medium",
+        "description": "Detects inefficient loop patterns",
+        "message": "Loop with .length in condition - cache length for better performance",
+        "line_number": 22,
+        "column": 9,
+        "matched_text": "for (let j = 0; j < users.length; j++)",
+        "fix_suggestion": "Cache array length: for(let i = 0, len = arr.length; i < len; i++)",
+        "auto_fix": false,
+        "metadata": {
+          "created_by": "performance",
+          "created_at": "2025-08-07T00:20:08.788Z",
+          "tags": []
+        },
+        "file": "test.js",
+        "pr_number": 123,
+        "timestamp": "2025-08-07T00:20:08.817Z"
+      },
+      {
+        "rule_name": "require-pagination-for-large-datasets",
+        "category": "performance",
+        "severity": "medium",
+        "description": "Ensures large dataset queries use pagination",
+        "message": "SQL query without LIMIT clause",
+        "line_number": 15,
+        "column": 18,
+        "matched_text": "SELECT * FROM users WHERE name = '${query}'`",
+        "fix_suggestion": "Add LIMIT clause to prevent large result sets",
+        "auto_fix": false,
+        "metadata": {
+          "created_by": "performance",
+          "created_at": "2025-08-07T00:20:08.788Z",
+          "tags": []
+        },
+        "file": "test.js",
+        "pr_number": 123,
+        "timestamp": "2025-08-07T00:20:08.817Z"
+      }
+    ],
+    "consider_fixing": [],
+    "auto_fixable": []
+  },
+  "trends": {
+    "improvement_from_last_pr": "N/A",
+    "team_average_comparison": "N/A",
+    "repository_trend": "N/A"
+  }
+}
