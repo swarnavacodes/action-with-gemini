@@ -60,11 +60,13 @@ jobs:
         if: always()
         run: node scripts/pipeline-reporter.js step-summary
 
-      - name: 🚨 Check Merge Eligibility (Quality Gate)
+      - name: 📊 Generate Merge Status Report
         if: always()
         env:
           GITHUB_PR_NUMBER: ${{ github.event.number }}
-        run: node scripts/check-merge-status.js
+        run: |
+          echo "📋 Generating merge eligibility report..."
+          node scripts/check-merge-status.js || echo "⚠️ Merge blocked due to quality issues"
 
       - name: Upload Reports as Artifacts
         if: always()
@@ -98,3 +100,39 @@ jobs:
           echo "❌ Gemini AI Code Review encountered an error"
           echo "🔍 Check the logs above for details"
           echo "💡 Common issues: API quota exceeded, network issues, or configuration problems"
+
+  # Separate job for merge blocking - creates a required status check
+  merge-gate:
+    runs-on: ubuntu-latest
+    needs: review
+    if: always()
+    
+    permissions:
+      contents: read
+      pull-requests: read
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install dependencies
+        run: npm install --production
+      
+      - name: Download Reports
+        uses: actions/download-artifact@v4
+        with:
+          name: code-review-reports-pr-${{ github.event.number }}
+          path: .
+        continue-on-error: true
+      
+      - name: 🚨 Merge Quality Gate
+        env:
+          GITHUB_PR_NUMBER: ${{ github.event.number }}
+        run: |
+          echo "🔍 Checking if PR meets quality standards for merging..."
+          node scripts/check-merge-status.js
