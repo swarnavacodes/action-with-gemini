@@ -11,6 +11,7 @@
     "test-rules": "node -e \"const RuleEngine = require('./src/rule-engine'); const engine = new RuleEngine(); engine.loadRulesFromConfig().then(() => console.log('✅ Rules loaded successfully'))\"",
     "generate-report": "node tests/test-rule-engine.js",
     "view-reports": "node scripts/view-reports.js",
+    "check-merge": "node scripts/check-merge-status.js",
     "validate-rules": "node -e \"const engine = require('./src/rule-engine'); console.log('Rule validation complete')\""
   },
   "dependencies": {

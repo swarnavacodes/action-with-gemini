@@ -60,6 +60,12 @@ jobs:
         if: always()
         run: node scripts/pipeline-reporter.js step-summary
 
+      - name: 🚨 Check Merge Eligibility (Quality Gate)
+        if: always()
+        env:
+          GITHUB_PR_NUMBER: ${{ github.event.number }}
+        run: node scripts/check-merge-status.js
+
       - name: Upload Reports as Artifacts
         if: always()
         uses: actions/upload-artifact@v4

@@ -96,9 +96,20 @@ class GeminiPRReviewer {
             // Post enhanced review comment
             await this.postEnhancedReviewComment(owner, repo, prNumber, reviewResult, ruleEngineResults, report);
 
-            // Auto-merge if review is successful and no critical issues
-            if (reviewResult.approved && ruleEngineResults.issues_by_severity.critical === 0) {
+            // Auto-merge only if review is successful AND no critical issues AND score is acceptable
+            const shouldAutoMerge = reviewResult.approved && 
+                                  ruleEngineResults.issues_by_severity.critical === 0 && 
+                                  report.summary.overall_score >= 7;
+            
+            if (shouldAutoMerge) {
+                console.log('✅ All criteria met for auto-merge');
                 await this.autoMergePR(owner, repo, prNumber);
+            } else {
+                console.log('🚫 Auto-merge blocked:');
+                console.log(`  - AI Approved: ${reviewResult.approved}`);
+                console.log(`  - Critical Issues: ${ruleEngineResults.issues_by_severity.critical}`);
+                console.log(`  - Overall Score: ${report.summary.overall_score}/10`);
+                console.log('📋 Manual review and fixes required before merge');
             }
 
             console.log(`✅ Review completed in ${duration}`);
