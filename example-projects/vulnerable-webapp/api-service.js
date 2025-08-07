@@ -59,7 +59,7 @@ function setupWebSocket() {
 app.get('/api/users/:id', (req, res) => {
     const user = database.findUser(req.params.id);
     if (!user) {
-        res.status(404).json({ error: 'User not found' });
+        res.status(404).json({ error: 'not found' });
         return;
     }
     res.json(user.profile); // Will crash if user is null
