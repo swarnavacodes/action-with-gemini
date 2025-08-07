@@ -1,0 +1,20 @@
+# Code Owners - Automatic Reviewer Assignment
+# This file automatically assigns reviewers when PRs are created
+
+# Global code ownership - AI reviewer runs automatically via GitHub Actions
+* @swarnavacodes
+
+# Specific file patterns for different teams
+src/ @swarnavacodes
+.kiro/rules/ @swarnavacodes
+example-projects/ @swarnavacodes
+docs/ @swarnavacodes
+
+# Security-sensitive files require additional review
+.github/workflows/ @swarnavacodes
+src/security-utils.js @swarnavacodes
+.kiro/rules/security-focused.js @swarnavacodes
+
+# Configuration files
+package.json @swarnavacodes
+.env.example @swarnavacodes

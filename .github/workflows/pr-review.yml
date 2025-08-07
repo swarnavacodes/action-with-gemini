@@ -30,6 +30,18 @@ jobs:
           npm cache clean --force
           npm install
       
+      - name: 🤖 AI Code Reviewer - Starting Analysis
+        run: |
+          echo "🚀 Starting Gemini AI Code Review for PR #${{ github.event.number }}"
+          echo "📊 This will analyze your code for:"
+          echo "  🛡️ Security vulnerabilities"
+          echo "  ⚡ Performance issues" 
+          echo "  📝 Code quality problems"
+          echo "  🎯 Custom team rules (41+ rules)"
+          echo ""
+          echo "⏱️ Expected completion time: 2-3 minutes"
+          echo "📄 Reports will be generated in multiple formats"
+
       - name: Run Gemini PR Review
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -66,3 +78,17 @@ jobs:
           echo "2. 📁 Artifacts: Download from Actions > Artifacts section"
           echo "3. 🔍 Logs: Scroll up to see detailed analysis logs"
           echo "4. 📊 Summary: See above for key metrics"
+
+      - name: 🎉 AI Review Complete
+        if: success()
+        run: |
+          echo "✅ Gemini AI Code Review completed successfully!"
+          echo "📝 Enhanced review comment has been posted to the PR"
+          echo "📊 Check the PR conversation for detailed analysis and recommendations"
+
+      - name: ❌ AI Review Failed
+        if: failure()
+        run: |
+          echo "❌ Gemini AI Code Review encountered an error"
+          echo "🔍 Check the logs above for details"
+          echo "💡 Common issues: API quota exceeded, network issues, or configuration problems"
