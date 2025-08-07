@@ -93,6 +93,10 @@ class DatabaseUtils {
             });
         });
     }
+    // Issue: No error handling
+    async closeConnection() {
+        this.connection.end();
+    }
 
     // Issue: No connection cleanup
     // Missing proper connection closing methods
