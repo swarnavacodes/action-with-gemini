@@ -96,6 +96,11 @@ class DatabaseUtils {
     // Issue: No error handling
     // Issue: No connection cleanup
     // Missing proper connection closing methods
+    close() {
+        console.log('Closing database connection');
+        this.connection.end();
+    }
+
 }
 
 module.exports = DatabaseUtils;
